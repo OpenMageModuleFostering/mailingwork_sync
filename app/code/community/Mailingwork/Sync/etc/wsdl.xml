@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="customerAddressEntityCreate">
+                <all>
+                    <element name="email" type="xsd:string" minOccurs="0"/>
+                    <element name="quote_id" type="xsd:string" minOccurs="0"/>
+                    <element name="updated_at" type="xsd:string" minOccurs="0"/>
+                    <element name="store_id" type="xsd:string" minOccurs="0"/>
+                    <element name="checkout_status" type="xsd:string" minOccurs="0"/>
+                </all>
+            </complexType>
+            <complexType name="abandonedCartsResponseEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:abandonedCartsResponseEntity[]"/>
+                    </restriction>
+                </complexContent>
+            </complexType>
+        </schema>
+    </types>
+    <message name="MailingworkSyncApiGetAbandonedCartsRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="secondsUntilLastUpdate" type="xsd:int" />
+    </message>
+    <message name="MailingworkSyncApiGetAbandonedCartsResponse">
+        <part name="result" type="typens:abandonedCartsResponseEntityArray" />
+    </message>
+    <message name="MailingworkSyncApiUnsubscribeSubscriberRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="email" type="xsd:string" />
+    </message>
+    <message name="MailingworkSyncApiUnsubscribeSubscriberResponse">
+        <part name="result" type="xsd:int" />
+    </message>
+    <message name="MailingworkSyncApiGetMailingworkLogRequest">
+        <part name="sessionId" type="xsd:string"/>
+    </message>
+    <message name="MailingworkSyncApiGetMailingworkLogResponse">
+        <part name="result" type="xsd:string" />
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="MailingworkSyncApiGetAbandonedCarts">
+            <documentation>get Abandoned Carts</documentation>
+            <input message="typens:MailingworkSyncApiGetAbandonedCartsRequest" />
+            <output message="typens:MailingworkSyncApiGetAbandonedCartsResponse" />
+        </operation>
+        <operation name="MailingworkSyncApiUnsubscribeSubscriber">
+            <documentation>unsubscribe Magento Newslettersubscriber</documentation>
+            <input message="typens:MailingworkSyncApiUnsubscribeSubscriberRequest" />
+            <output message="typens:MailingworkSyncApiUnsubscribeSubscriberResponse" />
+        </operation>
+        <operation name="MailingworkSyncApiGetMailingworkLog">
+            <documentation>gets Mailingwork Logfile for Support</documentation>
+            <input message="typens:MailingworkSyncApiGetMailingworkLogRequest" />
+            <output message="typens:MailingworkSyncApiGetMailingworkLogResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="MailingworkSyncApiGetAbandonedCarts">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="MailingworkSyncApiUnsubscribeSubscriber">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="MailingworkSyncApiGetMailingworkLog">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+    <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}" />
+        </port>
+    </service>
+</definitions>

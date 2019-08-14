@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * mailignwork GmbH
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com and you will be sent a copy immediately.
+ *
+ * @category   mailingwork
+ * @package    Mailingwork_Sync
+ * @copyright  Copyright (c) 2016 mailingwork GmbH (http://mailingwork.de)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Mailingwork_Sync>
+            <version>1.0.1</version>
+        </Mailingwork_Sync>
+    </modules>
+
+    <global>
+        <!-- MODELS -->
+        <models>
+            <mailingwork_sync>
+                <class>Mailingwork_Sync_Model</class>
+                <resourceModel>mailingwork_sync_resource</resourceModel>
+            </mailingwork_sync>
+            <newsletter>
+                <rewrite>
+                    <subscriber>Mailingwork_Sync_Model_Subscriber</subscriber>
+                </rewrite>
+            </newsletter>
+            <mailingwork_sync_resource>
+                <class>Mailingwork_Sync_Model_Resource</class>
+                <entities>
+                    <abandonedcartcheckoutstatus>
+                        <table>mailingwork_sync_abandonedcartcheckoutstatus</table>
+                    </abandonedcartcheckoutstatus>
+                </entities>
+            </mailingwork_sync_resource>
+        </models>
+        <!-- BLOCKS -->
+        <blocks>
+            <mailingwork_sync>
+                <class>Mailingwork_Sync_Block</class>
+            </mailingwork_sync>
+        </blocks>
+        <!-- HELPERS -->
+        <helpers>
+            <mailingwork_sync>
+                <class>Mailingwork_Sync_Helper</class>
+            </mailingwork_sync>
+        </helpers>
+        <!-- EVENTS -->
+        <events>
+            <customer_address_save_after>
+                <observers>
+                    <mailingwork_sync>
+                        <type>singleton</type>
+                        <class>Mailingwork_Sync_Model_Observer</class>
+                        <method>customer_address_save_after</method>
+                    </mailingwork_sync>
+                </observers>
+            </customer_address_save_after>
+
+            <customer_save_after>
+                <observers>
+                    <mailingwork_sync>
+                        <type>singleton</type>
+                        <class>Mailingwork_Sync_Model_Observer</class>
+                        <method>customer_save_after</method>
+                    </mailingwork_sync>
+                </observers>
+            </customer_save_after>
+
+            <sales_order_save_after>
+                <observers>
+                    <mailingwork_sync>
+                        <type>singleton</type>
+                        <class>Mailingwork_Sync_Model_Observer</class>
+                        <method>sales_order_save_after</method>
+                    </mailingwork_sync>
+                </observers>
+            </sales_order_save_after>
+        </events>
+        <!-- RESOURCES -->
+        <resources>
+            <mailingwork_sync_setup>
+                <setup>
+                    <module>Mailingwork_Sync</module>
+                </setup>
+            </mailingwork_sync_setup>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <mailingwork_sync before="Mage_Adminhtml">Mailingwork_Sync_Adminhtml</mailingwork_sync>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <mailingwork_sync>
+                    <files>
+                        <default>Mailingwork_Sync.csv</default>
+                    </files>
+                </mailingwork_sync>
+            </modules>
+        </translate>
+    </adminhtml>
+    <frontend>
+        <routers>
+            <checkout>
+                <args>
+                    <modules>
+                        <Mailingwork_Sync before="Mage_Checkout">Mailingwork_Sync</Mailingwork_Sync>
+                    </modules>
+                    <frontName>checkout</frontName>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+    <!-- KONFIGURATION -->
+    <default>
+        <mailingwork_sync>
+            <mailingwork_sync_configuration>
+                <wsdl_url>https://login.mailingwork.de/webservice/webservice/</wsdl_url>
+                <ws_type>soap3</ws_type>
+                <ws_param>wsdl</ws_param>
+                <ws_location></ws_location>
+            </mailingwork_sync_configuration>
+        </mailingwork_sync>
+    </default>
+</config>
