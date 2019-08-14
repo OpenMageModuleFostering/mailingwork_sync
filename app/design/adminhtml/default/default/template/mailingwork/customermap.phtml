@@ -1,0 +1,91 @@
+<?php
+/**
+ * mailignwork GmbH
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com and you will be sent a copy immediately.
+ *
+ * @category   mailingwork
+ * @package    Mailingwork_Sync
+ * @copyright  Copyright (c) 2016 mailingwork GmbH (http://mailingwork.de)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+$_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid();
+
+$_colspan = 2;
+if (!$this->_addAfter) {
+    $_colspan -= 1;
+}
+$_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
+?>
+
+<div class="grid" id="grid<?php echo $_htmlId ?>">
+    <table cellpadding="0" cellspacing="0" class="border" style="width:400px;">
+        <tbody>
+
+            <tr class="headings" id="headings<?php echo $_htmlId ?>">
+<?php foreach ($this->_columns as $columnName => $column):?>
+                <th>
+                    <?php echo $column['label'] ?>
+                </th>
+<?php endforeach;?>
+            </tr>
+
+<?php foreach ($this->getFieldsForMapping() as $mageFieldGroupKey => $mageFieldGroup): ?>
+
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                <b>
+                    <?php echo $this->__($mageFieldGroupKey); ?>
+                </b>
+                </td>
+            </tr>
+            <?php foreach ($mageFieldGroup as $mageField): ?>
+            <tr>
+                <?php foreach ($this->_columns as $columnName => $column): ?>
+                    <td>
+                        <?php
+                            if ($columnName == 'magento') {
+                                echo $this->__($mageField);
+                            } else {
+                                echo $this->renderMwCellTemplate($columnName, $mageField, $mageFieldGroupKey);
+                            }
+                        ?>
+                    </td>
+                <?php endforeach;?>
+            </tr>
+            <?php endforeach;?>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+    <input type="hidden" name="<?php echo $this->getElement()->getName() ?>[__empty]" value="" />
+</div>
+<script>
+        var messageType = "<?php echo $this->getMessageType() ?>";
+        var message = "<?php echo $this->getMessage() ?>";
+        document.addEventListener("DOMContentLoaded", function(event) {
+            if (typeof messageType != 'undefined' && messageType == 'error') {
+                mt = document.createTextNode(message);
+                ul1 = document.createElement('ul');
+                ul1.setAttribute('class', "messages");
+                li1 = document.createElement('li');
+                li1.setAttribute('class', "error-msg");
+                ul2 = document.createElement('ul');
+                li2 = document.createElement('li');
+                li2.appendChild(mt);
+                ul2.appendChild(li2);
+                li1.appendChild(ul2);
+                ul1.appendChild(li1);
+                fs = document.getElementById('newsletter_mailingwork_sync');
+                fs.insertBefore(ul1, fs.childNodes[1]);
+            }
+        });
+</script>

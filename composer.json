@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Mailingwork_Sync",
+    "type": "magento-module",
+    "license": "OSL-3.0",
+    "homepage": "",
+    "description": "mailingwork E-Mailmarketing connection to Magento",
+    "authors": [
+    {
+        "name": "mailingwork GmbH",
+        "email": "magento@mailingwork.de"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

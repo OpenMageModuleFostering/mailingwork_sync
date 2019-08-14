@@ -1,0 +1,91 @@
+<?php
+/**
+ * mailignwork GmbH
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com and you will be sent a copy immediately.
+ *
+ * @category   mailingwork
+ * @package    Mailingwork_Sync
+ * @copyright  Copyright (c) 2016 mailingwork GmbH (http://mailingwork.de)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<script>
+//<![CDATA[
+    function startInitialImport() {
+        var elem = document.getElementById("newsletter_mwsyncimport_message");
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+
+        params = {
+            importlist: $('<?php /* @escapeNotVerified */ echo $this->getImportListField(); ?>').value,
+            storeid: '<?php echo $this->getStoreId(); ?>'
+
+        };
+
+        new Ajax.Request('<?php /* @escapeNotVerified */ echo $this->getAjaxUrl() ?>', {
+            parameters: params,
+            onSuccess: function(response) {
+                console.log(response);
+                var result = '<?php /* @escapeNotVerified */ echo __('Fehler beim Import!') ?>';
+                try {
+                    console.log(response);
+                    console.log(response.responseText);
+                    console.log(response.responseText.isJSON());
+                    if (response.responseText.isJSON()) {
+                        response = response.responseText.evalJSON();
+                        result = response.message;
+                        console.log(response);
+                        console.log(result);
+                    }
+                    if (response.valid == 1) {
+                        showMessage(false, result);
+                    } else {
+                        showMessage(true, result);
+                    }
+                } catch (e) {
+                    showMessage(true, result);
+                }
+            }
+        });
+    }
+
+    function showMessage(error, message) {
+        console.log(error, message);
+        var mt = document.createTextNode(message);
+        var ul1 = document.createElement('ul');
+        ul1.setAttribute('class', "messages");
+        ul1.setAttribute('id', "newsletter_mwsyncimport_message");
+        var li1 = document.createElement('li');
+        if (error) {
+            li1.setAttribute('class', "error-msg");
+        } else {
+            li1.setAttribute('class', "success-msg");
+        }
+        var ul2 = document.createElement('ul');
+        var li2 = document.createElement('li');
+        li2.appendChild(mt);
+        ul2.appendChild(li2);
+        li1.appendChild(ul2);
+        ul1.appendChild(li1);
+        var fs = document.getElementById('newsletter_mailingwork_syncimport');
+        fs.insertBefore(ul1, fs.childNodes[1]);
+    }
+
+    window.startInitialImport = startInitialImport;
+    window.showMessage = showMessage;
+//]]>
+
+</script>
+
+
+<?php echo $this->getButtonHtml() ?>
