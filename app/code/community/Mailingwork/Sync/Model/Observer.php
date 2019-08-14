@@ -39,8 +39,14 @@ class Mailingwork_Sync_Model_Observer
 		if ($bChanged) {
 			$subscriber = Mage::getModel('newsletter/subscriber')->loadByCustomer($customer);
 			if (!empty($subscriber)) {
-				$mwApi = new Mailingwork_Sync_Model_MwApi();
-				$mwApi->updateRecipient($subscriber);
+				try {
+					$mwApi = new Mailingwork_Sync_Model_MwApi();
+					$mwApi->updateRecipient($subscriber);
+				} catch (\Exception $e) {
+					//update error in mailingwork, catch error to nothing to have no problems in magento
+					$logger = new Mailingwork_Sync_Model_Logger();
+					$logger->log_error(__METHOD__ . 'StoreId: '.$helper->_getConfigScopeStoreId().' ' . $e->getMessage());
+				}
 			}
 		}
 	}
@@ -64,8 +70,15 @@ class Mailingwork_Sync_Model_Observer
 		if ($bChanged) {
 			$subscriber = Mage::getModel('newsletter/subscriber')->loadByCustomer($customer);
 			if (!empty($subscriber)) {
-				$mwApi = new Mailingwork_Sync_Model_MwApi();
-				$mwApi->updateRecipient($subscriber);
+				try {
+					$mwApi = new Mailingwork_Sync_Model_MwApi();
+					$mwApi->updateRecipient($subscriber);
+				} catch (\Exception $e) {
+					//update error in mailingwork, catch error to nothing to have no problems in magento
+					$logger = new Mailingwork_Sync_Model_Logger();
+					$logger->log_error(__METHOD__ . 'StoreId: '.$helper->_getConfigScopeStoreId().' ' . $e->getMessage());
+				}
+
 			}
 		}
 	}
@@ -81,8 +94,14 @@ class Mailingwork_Sync_Model_Observer
 		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 		$subscriber = Mage::getModel('newsletter/subscriber')->loadByCustomer($customer);
 		if (!empty($subscriber)) {
-			$mwApi = new Mailingwork_Sync_Model_MwApi();
-			$mwApi->updateRecipient($subscriber);
+			try {
+				$mwApi = new Mailingwork_Sync_Model_MwApi();
+				$mwApi->updateRecipient($subscriber);
+			} catch (\Exception $e) {
+				//update error in mailingwork, catch error to nothing to have no problems in magento
+				$logger = new Mailingwork_Sync_Model_Logger();
+				$logger->log_error(__METHOD__ . 'StoreId: '.$helper->_getConfigScopeStoreId().' ' . $e->getMessage());
+			}
 		}
 	}
 
